@@ -80,21 +80,26 @@ class NavigateToURLDialog extends StatelessWidget {
       canPop: false,
       child: Dialog(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text('Ad', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+              ),
+              SizedBox(height: 10),
               Image.asset(
                 "assets/images/sabong_logo.png",
                 width: size.width * 0.25,
                 height: size.width * 0.25,
               ),
-              const SizedBox(height: 10),
-              const Padding(
+              SizedBox(height: 10),
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  "Your official gateway to Sabong. Visit now!",
+                  "Visit our Official Website. Visit now!",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),

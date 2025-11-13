@@ -228,43 +228,58 @@ class _StartGamePageState extends State<StartGamePage> {
                 ? SafeArea(
                     child: Container(
                       decoration: BoxDecoration(color: Color(0xffF1CA51)),
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4),
                             child: Text(
-                              "Visit our official sabong website",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
+                              'Ad',
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              _launchGameLink();
-                              // if (_gameLink.isNotEmpty) {
-                              //   await launchUrl(Uri.parse(_gameLink), mode: LaunchMode.externalApplication);
-                              // }
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                              child: Text(
-                                "Let’s Go",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "Visit our Official Website. Visit now!",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    _launchGameLink();
+                                    // if (_gameLink.isNotEmpty) {
+                                    //   await launchUrl(Uri.parse(_gameLink), mode: LaunchMode.externalApplication);
+                                    // }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                    child: Text(
+                                      "Let’s Go",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+                          SizedBox(height: 10),
                         ],
                       ),
                     ),
