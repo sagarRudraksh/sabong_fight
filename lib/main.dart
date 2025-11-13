@@ -1,9 +1,11 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sabong_fight/screen/splash_screen_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AudioPlayer.global.ensureInitialized();
   runApp(const MyApp());
 }
 

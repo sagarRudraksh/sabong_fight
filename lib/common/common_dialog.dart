@@ -44,7 +44,7 @@ class GameOverDialog extends StatelessWidget {
               ),
               child: Text(
                 "Highest Score : $highScore",
-                style: const TextStyle(fontSize: 28, color: Colors.black),
+                style: const TextStyle(fontSize: 20, color: Colors.black),
               ),
             ),
             const SizedBox(height: 24),
@@ -59,7 +59,7 @@ class GameOverDialog extends StatelessWidget {
               ),
               child: Text(
                 "Score : $score",
-                style: const TextStyle(fontSize: 28, color: Color(0xffF1CA51)),
+                style: const TextStyle(fontSize: 20, color: Color(0xffF1CA51)),
               ),
             ),
             const SizedBox(height: 20),

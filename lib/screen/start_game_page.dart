@@ -159,7 +159,7 @@ class _StartGamePageState extends State<StartGamePage> {
                         child: Text(
                           "Highest Score : ${controller.highScore.value.toString()}",
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             fontWeight: FontWeight.w400,
                             color: Colors.white,
                           ),

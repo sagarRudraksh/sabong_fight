@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sabong_fight/common/common_dialog.dart';
@@ -12,6 +13,7 @@ class GameController extends GetxController {
   var highScore = 0.obs;
   var gameStarted = false.obs;
   var isPrefsLoaded = false.obs;
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   var eggs = <Map<String, dynamic>>[].obs;
 
@@ -142,9 +144,15 @@ class GameController extends GetxController {
     }
   }
 
-  void gameOver() {
+  void gameOver() async {
     gameTimer?.cancel();
     gameStarted.value = false;
+    await _audioPlayer.play(AssetSource('sounds/egg_break_sound.mp3'));
+
+    // Optional: stop after 2 seconds
+    Future.delayed(const Duration(seconds: 4), () {
+      _audioPlayer.stop();
+    });
 
     // Delay dialog slightly so it can appear after frame ends
     Future.delayed(const Duration(milliseconds: 100), () async {

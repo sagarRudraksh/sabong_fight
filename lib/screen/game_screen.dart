@@ -21,9 +21,8 @@ class GameView extends StatelessWidget {
       child: GestureDetector(
         onTap: () => controller.gameStarted.value ? controller.jump() : controller.startGame(),
         child: Scaffold(
-          backgroundColor: Colors.blue[100],
           appBar: AppBar(
-            backgroundColor: Colors.blue[100],
+            backgroundColor: Color(0xffF1CA51),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -47,13 +46,12 @@ class GameView extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Container(
-                  color: Colors.blue[200],
+                  color: Color(0xff2A2A2A),
                   child: Stack(
                     children: [
-                      // Dino (now chicken)
                       Obx(
                         () => controller.anyEggBroken.value
-                            ? const SizedBox() // ✅ Hide when egg is broken
+                            ? const SizedBox()
                             : AnimatedContainer(
                                 alignment: Alignment(0, controller.dinoY.value),
                                 duration: const Duration(milliseconds: 0),
@@ -64,8 +62,6 @@ class GameView extends StatelessWidget {
                                 ),
                               ),
                       ),
-
-                      // Eggs (obstacles)
                       Obx(
                         () => Stack(
                           children: controller.eggs.map((egg) {
@@ -75,25 +71,19 @@ class GameView extends StatelessWidget {
                               alignment: Alignment(x, 1),
                               duration: const Duration(milliseconds: 0),
                               child: broken
-                                  ? SizedBox(
-                                      height: 40,
-                                      width: 40,
-                                      child: Lottie.asset('assets/images/break_egg.json'),
-                                    )
+                                  ? Offstage()
                                   : Icon(Icons.egg, size: 40, color: Colors.white),
                             );
                           }).toList(),
                         ),
                       ),
-
-                      // Game start text
                       Obx(
                         () => controller.gameStarted.value
-                            ? const SizedBox()
+                            ? const Offstage()
                             : const Center(
                                 child: Text(
                                   "TAP TO START",
-                                  style: TextStyle(fontSize: 24, color: Colors.black),
+                                  style: TextStyle(fontSize: 24, color: Colors.white),
                                 ),
                               ),
                       ),
@@ -101,19 +91,15 @@ class GameView extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // Ground
               Container(height: 15, color: Colors.green),
-
-              // Bottom Decoration (optional)
               SafeArea(
                 child: Container(
                   height: 110,
-                  color: Colors.brown[300],
+                  color: Color(0xffF1CA51),
                   child: const Center(
                     child: Text(
                       "🐔 Avoid breaking eggs!",
-                      style: TextStyle(fontSize: 26, color: Colors.white),
+                      style: TextStyle(fontSize: 26, color: Color(0xff2A2A2A)),
                     ),
                   ),
                 ),
