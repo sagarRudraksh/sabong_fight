@@ -71,11 +71,31 @@ class _StartGamePageState extends State<StartGamePage> {
   }
 
   /// ✅ Launch Privacy Policy link
+  // Future<void> _launchPrivacyLink() async {
+  //   final link = privacyLink.value.trim();
+  //   if (link.isNotEmpty && await canLaunchUrl(Uri.parse(link))) {
+  //     await launchUrl(Uri.parse(link), mode: LaunchMode.platformDefault);
+  //   } else {
+  //     debugPrint('❌ Could not launch privacy link: $link');
+  //   }
+  // }
   Future<void> _launchPrivacyLink() async {
     final link = privacyLink.value.trim();
-    if (link.isNotEmpty && await canLaunchUrl(Uri.parse(link))) {
-      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
-    } else {
+    if (link.isEmpty) {
+      debugPrint('⚠️ Empty privacy link');
+      return;
+    }
+
+    final uri = Uri.tryParse(link);
+    if (uri == null) {
+      debugPrint('❌ Invalid URI: $link');
+      return;
+    }
+
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.platformDefault, // ✅ safer for all platforms
+    )) {
       debugPrint('❌ Could not launch privacy link: $link');
     }
   }
@@ -84,7 +104,7 @@ class _StartGamePageState extends State<StartGamePage> {
   Future<void> _launchGameLink() async {
     final link = gameLink.value.trim();
     if (link.isNotEmpty && await canLaunchUrl(Uri.parse(link))) {
-      await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+      await launchUrl(Uri.parse(link), mode: LaunchMode.platformDefault);
     } else {
       debugPrint('❌ Could not launch game link: $link');
     }
@@ -95,152 +115,163 @@ class _StartGamePageState extends State<StartGamePage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: size.height * 0.19),
-            Image.asset(
-              "assets/images/sabong_logo.png",
-              width: size.width * 0.55,
-              height: size.width * 0.55,
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Sabong Fight",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: size.width * 0.08,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            Text(
-              "SabongPH 2026",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: size.width * 0.085,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 30),
-            Obx(() {
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 60),
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.yellow),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  "Highest Score : ${controller.highScore.value.toString()}",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400, color: Colors.white),
-                ),
-              );
-            }),
-            SizedBox(height: size.height * 0.05),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => GameView()));
-              },
-              child: Image.asset(
-                "assets/images/start_game.png",
-                width: size.width * 0.65,
-                // height: size.width * 0.2,
-              ),
-            ),
-            SizedBox(height: size.height * 0.05),
-            Expanded(
-              child: RichText(
-                text: TextSpan(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TextSpan(
-                      text: 'To learn more, please review our ',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                    SizedBox(height: size.height * 0.08),
+                    Image.asset(
+                      "assets/images/sabong_logo.png",
+                      width: size.width * 0.55,
+                      height: size.width * 0.55,
                     ),
-                    TextSpan(
-                      text: 'Privacy Policy',
+                    SizedBox(height: 15),
+                    Text(
+                      "Sabong Fight",
                       style: TextStyle(
-                        fontSize: 14,
-                        decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                        fontSize: size.width * 0.08,
+                        fontWeight: FontWeight.w300,
                       ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          _launchPrivacyLink();
-                          // _launchUrl();
-                          // Action to perform when "Sign up" is tapped
-                          debugPrint('Sign up tapped!');
-                          // Example: Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
-                        },
                     ),
-                    TextSpan(text: ' '),
-                    WidgetSpan(
+                    Text(
+                      "SabongPH 2026",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: size.width * 0.085,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    Obx(() {
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 60),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.yellow),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          "Highest Score : ${controller.highScore.value.toString()}",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    }),
+                    SizedBox(height: size.height * 0.05),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => GameView()));
+                      },
                       child: Image.asset(
-                        "assets/images/right_arrow.png",
-                        height: 10,
-                        // width: size.width * 0.55,
-                        // height: size.width * 0.55,
+                        "assets/images/start_game.png",
+                        width: size.width * 0.65,
+                        // height: size.width * 0.2,
                       ),
                     ),
-                    TextSpan(
-                      text: ' here.',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                    SizedBox(height: size.height * 0.05),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'To learn more, please review our ',
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                            text: 'Privacy Policy',
+                            style: TextStyle(
+                              fontSize: 14,
+                              decoration: TextDecoration.underline,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                _launchPrivacyLink();
+                                // _launchUrl();
+                                // Action to perform when "Sign up" is tapped
+                                debugPrint('Sign up tapped!');
+                                // Example: Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+                              },
+                          ),
+                          TextSpan(text: ' '),
+                          WidgetSpan(
+                            child: Image.asset(
+                              "assets/images/right_arrow.png",
+                              height: 10,
+                              // width: size.width * 0.55,
+                              // height: size.width * 0.55,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' here.',
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-            // ✅ Show bottom container only if ads_flag = true
-            Obx(
-              () => adsFlag.value
-                  ? SafeArea(
-                      child: Container(
-                        decoration: BoxDecoration(color: Color(0xffF1CA51)),
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
+          ),
+          // ✅ Show bottom container only if ads_flag = true
+          Obx(
+            () => adsFlag.value
+                ? SafeArea(
+                    child: Container(
+                      decoration: BoxDecoration(color: Color(0xffF1CA51)),
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Visit our official sabong website",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              _launchGameLink();
+                              // if (_gameLink.isNotEmpty) {
+                              //   await launchUrl(Uri.parse(_gameLink), mode: LaunchMode.externalApplication);
+                              // }
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(2),
+                              ),
                               child: Text(
-                                "Visit our official sabong website",
+                                "Let’s Go",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                            GestureDetector(
-                              onTap: () async {
-                                _launchGameLink();
-                                // if (_gameLink.isNotEmpty) {
-                                //   await launchUrl(Uri.parse(_gameLink), mode: LaunchMode.externalApplication);
-                                // }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 25),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(2),
-                                ),
-                                child: Text(
-                                  "Let’s Go",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    )
-                  : Offstage(),
-            ),
-          ],
-        ),
+                    ),
+                  )
+                : Offstage(),
+          ),
+        ],
       ),
     );
   }
